@@ -6,7 +6,7 @@ part 'moor_database.g.dart';
 // class for table
 class Tasks extends Table {
   // autoIncrement automatically sets this to be the primary key
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().autoIncrement().nullable()();
 
   // If the length constraint is not fulfilled, the Task will not
   // be inserted into the database and an exception will be thrown.
@@ -14,11 +14,11 @@ class Tasks extends Table {
 
   // DateTime is not natively supported by SQLite
   // Moor converts it to & from UNIX secondss
-  DateTimeColumn get dueData => dateTime().nullable()();
+  DateTimeColumn get dueDate => dateTime().nullable()();
 
   // Booleans are not supported as well, Moor converts them to integers
   // Simple default values are specified as Constants
-  BoolColumn get completed => boolean().withDefault(const Constant(false))();
+  BoolColumn get completed => boolean().withDefault(const Constant(false)).nullable()();
 
   // Custom primary keys defined as a set of columns
   // @override
@@ -56,6 +56,4 @@ class AppDatabase extends _$AppDatabase {
   //update a task with matching primary key
   Future updateTask(Task task) => update(tasks).replace(task);
   Future deleteTask(Task task) => delete(tasks).delete(task);
-
-  
 }
